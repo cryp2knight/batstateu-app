@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>chat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content #content>
+  <ion-item *ngIf="receiver" lines="full">
+    <ion-avatar item-start>
+      <img src="{{receiver.photo_url}}">
+    </ion-avatar>
+    <ion-label class="namePlate">
+      <h2>{{receiver.usr_fullname}}</h2>
+      <p>{{receiver.usr_name}}</p>
+    </ion-label>
+  </ion-item>
+  <ion-list *ngIf="receiver" #chatList>
+    <ion-item *ngFor="let chat of chats | keyvalue" lines="none" class="message" id="{{chat.key}}">
+      <ion-avatar *ngIf="chat.value.destination !== receiver.usr_name" slot="start" class="message-avatar">
+        <img src="{{receiver.photo_url}}">
+      </ion-avatar>
+      <div slot="{{chat.value.destination === receiver.usr_name ? 'end' : 'start'}}" class="message-size">
+        <small class="msg">{{chat.value.timestamp | timeAgo}}</small>
+        <div class="{{chat.value.destination === receiver.usr_name ? 'me' : 'you'}}" [innerHTML]="chat.value.message">
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer *ngIf="receiver">
+  <ion-item lines="none" class="messageInput">
+    <ion-button item-start fill="clear" color="medium" size="medium" (click)="f.click()">
+      <ion-icon name="image"></ion-icon>
+    </ion-button>
+    <input class="ion-hide" #f type="file" (change)="handleFileInput($event)" id="file-input" multiple
+            accept="image/png, image/jpeg">
+    <ion-textarea placeholder="send a message" [(ngModel)]="inputMessage"></ion-textarea>
+    <ion-button slot="end" (click)="sendMessage(receiver.usr_name)" fill="clear" size="medium">
+      <ion-icon name="send"></ion-icon>
+    </ion-button>
+  </ion-item>
+</ion-footer>

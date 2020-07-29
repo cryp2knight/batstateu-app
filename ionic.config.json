@@ -1,0 +1,8 @@
+{
+  "name": "BatStateU-Alumni-App",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

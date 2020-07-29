@@ -1,0 +1,16 @@
+.image {
+  width: 100%;
+  height: auto;
+}
+
+.imgContainer {
+  width: 100%;
+  height: 150px;
+  background-color: lightgray;
+  background-image: url("../../../assets/placeholder_image.svg");
+  background-size: cover;
+}
+
+.center {
+  align-content: center;
+}

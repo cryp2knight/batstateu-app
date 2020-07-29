@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Read post</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="post">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-item lines="full">
+    <ion-avatar item-start>
+      <img src="{{post.photoUrl}}">
+    </ion-avatar>
+    <ion-label style="margin-left: 20px;">
+      <strong>{{post.name}}</strong><br>
+      <small>{{toDate(-post.timestamp).toDateString()}}</small>
+    </ion-label>
+    <ion-button fill="clear" (click)="presentPopover(post.key)" *ngIf="post.uid == authUser.usr_name" slot="end">
+      <ion-icon slot="icon-only" color="medium" ios="ellipsis-vertical" md="ellipsis-vertical"></ion-icon>
+    </ion-button>
+  </ion-item>
+
+  <ion-slides pager="true" [options]="slideOpts">
+    <ion-slide *ngFor="let pic of post.images | keyvalue">
+      <div class="imgContainer" (click)="viewImage(pic.value.url)">
+        <ion-img [src]="pic.value.url" class="image"></ion-img>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+  <br>
+
+  <ion-item lines="none">
+    <div class="post">
+      {{post.post}}
+    </div>
+  </ion-item>
+
+  <ion-item lines="full" *ngIf="post.edits">
+    <small slot="end"><a (click)="viewEditHistory()">View Edit history</a></small>
+  </ion-item>
+
+  <ion-item lines="full">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="center">
+          <ion-button size="small" expand="full" fill="clear" color="{{post.isLikedByUser ? 'primary' : 'medium'}}"
+            (click)="doLike(post.key, post.isLikedByUser, i)">
+            <ion-icon name="thumbs-up-sharp"></ion-icon>
+            &nbsp;&nbsp;{{post.likeCount}}
+          </ion-button>
+        </ion-col>
+        <ion-col class="center">
+          <ion-button size="small" expand="full" fill="clear" color="medium">
+            <ion-icon name="chatbox-ellipses-sharp"></ion-icon>
+            &nbsp;&nbsp;
+            {{post.commentCount}}
+          </ion-button>
+        </ion-col>
+        <ion-col class="center">
+          <ion-button size="small" expand="full" fill="clear" color="medium">
+            <ion-icon name="bookmark-sharp"></ion-icon>
+            &nbsp;&nbsp;
+            Save
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+
+  <ion-list *ngIf="post.comments">
+    <ion-item *ngFor="let comment of post.comments | keyvalue">
+      <ion-avatar slot="start" class="comment-avatar">
+        <img src="{{comment.value.photoUrl}}">
+      </ion-avatar>
+      <ion-label text-wrap>
+        <h4>{{comment.value.name}} <small>{{toDate(comment.value.timestamp) | timeAgo}}</small></h4>
+        <p>
+          {{comment.value.comment}}
+        </p>
+      </ion-label>
+      <ion-button fill="clear" (click)="presentDeleteComment(comment.key)"
+        *ngIf="comment.value.uid == authUser.usr_name" slot="end" class="comment-align-top">
+        <ion-icon name="close-outline" color="medium"></ion-icon>
+      </ion-button>
+
+    </ion-item>
+  </ion-list>
+
+</ion-content>
+
+<ion-footer *ngIf="post">
+  <ion-item lines="none">
+    <ion-avatar slot="start">
+      <img src="{{authUser.photo_url}}">
+    </ion-avatar>
+    <ion-input placeholder="leave a comment" [(ngModel)]="inputComment"></ion-input>
+    <ion-button slot="end" (click)="comment()">Send</ion-button>
+  </ion-item>
+</ion-footer>

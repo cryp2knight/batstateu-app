@@ -1,0 +1,21 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Search User</ion-title>
+    <ion-button slot="end" fill="clear" size="small" (click)="close()">Close</ion-button>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="handleInput()" [(ngModel)]="input"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let user of users | keyvalue" class="user" (click)="viewMessage(user.key)">
+      <ion-avatar item-start>
+        <img src="{{user.value.photo_url}}">
+      </ion-avatar>
+      {{user.value.usr_fullname}}
+    </ion-item>
+
+  </ion-list>
+</ion-content>

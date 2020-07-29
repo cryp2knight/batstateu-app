@@ -1,0 +1,16 @@
+<ion-list>
+  <ion-list-header>Options</ion-list-header>
+  <ion-item button (click)="edit()">
+    <ion-icon name="create-sharp"></ion-icon>
+    &nbsp;&nbsp;Edit post
+  </ion-item>
+  <ion-item button (click)="presentAlertConfirm()">
+    <ion-icon name="trash-sharp"></ion-icon>
+    &nbsp;&nbsp;Delete
+  </ion-item>
+
+  <ion-item lines="none" detail="false" button (click)="closePopover()">
+    <ion-icon name="close-sharp"></ion-icon>
+    &nbsp;&nbsp;Close
+  </ion-item>
+</ion-list>

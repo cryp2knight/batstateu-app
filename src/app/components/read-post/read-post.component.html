@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Read post</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- fab placed to the top end -->
+<ion-fab vertical="top" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="closeModal()">
+    <ion-icon name="close-sharp"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-content>
+  <ion-item>
+    <ion-avatar item-start>
+      <img src="{{post.photoUrl}}">
+    </ion-avatar>
+    <ion-label style="margin-left: 20px;">
+      <strong>{{post.name}}</strong><br>
+      <small>{{toDate(-post.timestamp).toDateString()}}</small>
+    </ion-label>
+    <ion-button fill="clear" (click)="presentPopover(post.key)" *ngIf="post.uid == currentUser" slot="end">
+      <ion-icon slot="icon-only" color="medium" ios="ellipsis-vertical" md="ellipsis-vertical"></ion-icon>
+    </ion-button>
+  </ion-item>
+
+  <ion-slides pager="true" [options]="slideOpts" (click)="viewPost(post)">
+    <ion-slide *ngFor="let pic of post.images | keyvalue">
+      <div class="imgContainer">
+        <ion-img [src]="pic.value.url" class="image"></ion-img>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+
+  <ion-item>
+    <ion-text>
+      {{post.post}}
+    </ion-text>
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="center">
+        <ion-button size="small" expand="full" fill="clear" color="{{post.isLikedByUser ? 'primary' : 'medium'}}"
+          (click)="doLike(post.key, post.isLikedByUser, i)">
+          <ion-icon name="thumbs-up-sharp"></ion-icon>
+          &nbsp;&nbsp;{{post.likeCount}}
+        </ion-button>
+      </ion-col>
+      <ion-col class="center">
+        <ion-button size="small" expand="full" fill="clear" color="medium">
+          <ion-icon name="chatbox-ellipses-sharp"></ion-icon>
+          &nbsp;&nbsp;
+          100
+        </ion-button>
+      </ion-col>
+      <ion-col class="center">
+        <ion-button size="small" expand="full" fill="clear" color="medium">
+          <ion-icon name="bookmark-sharp"></ion-icon>
+          &nbsp;&nbsp;
+          Save
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

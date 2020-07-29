@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>messages</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- fab placed to the top end -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="addUser()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let msg of chatss" (click)='viewMessage(msg.key)'>
+      <ion-avatar item-start>
+        <img *ngIf="authUser.usr_name !== msg.last.destination; else elseBlock"
+          src="{{msg.last.destinationData.photo_url}}">
+        <ng-template #elseBlock>
+          <img src="{{msg.last.sourceData.photo_url}}">
+        </ng-template>
+      </ion-avatar>
+      <ion-label class="msgLabel">
+        <div class="header">
+          <strong
+            *ngIf="authUser.usr_name !== msg.last.destination; else elseName">
+            <small>{{msg.last.destinationData.usr_fullname}}</small>
+          </strong>
+          <ng-template #elseName>
+            <strong><small>{{msg.last.sourceData.usr_fullname}}</small></strong>
+          </ng-template>
+          <small class="smaller">{{toDate(msg.last.timestamp) | timeAgo}}</small>
+        </div>
+        <p>
+          <small *ngIf="authUser.usr_name === msg.last.source">You: </small>
+          <small>{{msg.last.message}}</small>
+        </p>
+
+      </ion-label>
+
+
+    </ion-item>
+  </ion-list>
+
+    <ion-item *ngIf="chatss.length == 0">
+      <ion-label>
+        <p>You have no messages</p>
+      </ion-label>
+    </ion-item>
+
+</ion-content>

@@ -1,0 +1,30 @@
+.image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .imgContainer {
+    width: 100%;
+    height: 200px;
+    background-color: lightgray;
+    background-image: url("../../../assets/placeholder_image.svg");
+    background-size: cover;
+  }
+  
+  .comment-avatar{
+    width: 30px;
+    height: 30px;
+    align-self: baseline;
+  }
+
+  .post{
+    white-space: pre-wrap;
+  }
+
+  .comment-align-top{
+    align-self: baseline;
+  }
+
+  .center {
+    align-content: center;
+  }

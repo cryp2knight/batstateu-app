@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Write post</ion-title>
+    <ion-button slot="end" fill="clear" (click)="closeModal()">
+      <ion-icon name="close-outline" color="medium"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-textarea [(ngModel)]="inputText" auto-grow="true" placeholder="Post something" disabled={{disabled}}>
+    </ion-textarea>
+  </ion-item>
+
+  <ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-button expand="block" fill="clear" size="medium" color="medium" (click)="f.click()"
+            disabled={{disabled}}>
+            <ion-icon name="images-sharp"></ion-icon><br>
+            <ion-icon name="add-sharp"></ion-icon>&nbsp;Add Images
+          </ion-button>
+          <input class="ion-hide" #f type="file" (change)="handleFileInput($event)" id="file-input" multiple
+            accept="image/png, image/jpeg">
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="uploadPost(inputText)" expand="full" shape="round" disabled={{disabled}}>Post
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let pic of pics">
+        <div class="container">
+          <ion-thumbnail>
+            <ion-button fill="clear" color="danger" shape="round" (click)="removePic(pic.id)" disabled={{disabled}}>
+              <ion-icon name="close-circle-sharp"></ion-icon>
+            </ion-button>
+            <div class="crop">
+              <ion-img [src]="pic.src"></ion-img>
+            </div>
+            <div class="loadpics"></div>
+          </ion-thumbnail>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

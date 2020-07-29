@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Feed</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<!-- Default Refresher -->
+
+<ion-content>
+  <!-- fab placed to the top end -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="createPost()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <!-- <img src="{{authUser?.photo_url}}"> -->
+  <ion-item>
+    <h2>Welcome {{ authUser?.usr_name }}</h2>
+    <ion-button expand="block" share="round" color="danger" (click)="logoutAction()">Logout</ion-button>
+  </ion-item>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+
+    </ion-refresher-content>
+  </ion-refresher>
+
+
+
+  <ion-card *ngFor="let post of posts, let i = index">
+    <ion-item lines="none">
+      <ion-avatar item-start>
+        <img src="{{post.photoUrl}}">
+      </ion-avatar>
+      <ion-label style="margin-left: 20px;">
+        <strong>{{post.name}}</strong><br>
+        <small>{{toDate(-post.timestamp) | timeAgo}}</small>
+      </ion-label>
+      <ion-button fill="clear" (click)="presentPopover(post.key)" *ngIf="post.uid == authUser?.usr_name" slot="end">
+        <ion-icon slot="icon-only" color="medium" ios="ellipsis-vertical" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-slides pager="true" [options]="slideOpts">
+      <ion-slide *ngFor="let pic of post.images | keyvalue">
+        <div class="imgContainer" (click)="viewImage(pic.value.url)">
+          <ion-img [src]="pic.value.url" class="image"></ion-img>
+        </div>
+      </ion-slide>
+    </ion-slides>
+
+
+    <ion-item (click)="viewPost(post)" lines="full">
+      <div>
+        <small>
+          <ion-text *ngIf="post.post.length < 200; else elseBlock">{{post.post}}</ion-text>
+          <ng-template #elseBlock>{{post.post.substr(0,200)}}... <a>read more</a></ng-template>
+        </small>
+      </div>
+    </ion-item>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col class="center">
+          <ion-button size="small" expand="full" fill="clear" color="{{post.isLikedByUser ? 'primary' : 'medium'}}"
+            (click)="doLike(post.key, post.isLikedByUser, i)">
+            <ion-icon name="thumbs-up-sharp"></ion-icon>
+            &nbsp;&nbsp;{{post.likeCount}}
+          </ion-button>
+        </ion-col>
+        <ion-col class="center">
+          <ion-button size="small" expand="full" fill="clear" color="medium" (click)="viewPost(post)">
+            <ion-icon name="chatbox-ellipses-sharp"></ion-icon>
+            &nbsp;&nbsp;
+            {{post.commentCount}}
+          </ion-button>
+        </ion-col>
+        <ion-col class="center">
+          <ion-button size="small" expand="full" fill="clear" color="medium">
+            <ion-icon name="bookmark-sharp"></ion-icon>
+            &nbsp;&nbsp;
+            Save
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-card>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadNextPosts($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data…">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <div *ngIf="isFinished">
+    end of feed
+  </div>
+
+
+</ion-content>
