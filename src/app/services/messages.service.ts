@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase'
-import { Observable, observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
-import { resolve } from 'dns';
 
 @Injectable({
   providedIn: 'root'
