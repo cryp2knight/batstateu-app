@@ -12,7 +12,37 @@ export class JobsService {
   currentUser: any
 
   constructor(private auth: AuthService) {
-    this.currentUser = auth.userData$.getValue()
+    this.currentUser = auth
+  }
+
+  sampleJobs = {
+    job1: {
+      position: "tester",
+      company: "facebook",
+      description: "5 years python experience",
+      type: "internship",
+      salary: 25000,
+      contactPerson: {
+        id: "18-01924",
+        name: "DE CASTRO, DANIEL D"
+      },
+      timestamp: 1596943134495,
+      status: "active"
+    },
+    job2: {
+      position: "developer",
+      company: "google",
+      description: "5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience5 years javascript experience",
+      type: "internship",
+      salary: 0,
+      contactPerson: {
+        id: "18-01924",
+        name: "DE CASTRO, DANIEL D"
+      },
+      timestamp: 1596943134495,
+      status: "active"
+    },
+
   }
 
   postAJob(job: any) {
@@ -31,6 +61,7 @@ export class JobsService {
      * save job to user profile
      */
     job.timestamp = firebase.database.ServerValue.TIMESTAMP
+    job.status = "active"
     job.contactPerson = {
       id: this.currentUser.usr_name,
       name: this.currentUser.usr_fullname
@@ -99,12 +130,13 @@ export class JobsService {
      * 
      */
     return new Observable(observer => {
-      firebase.database().ref("/jobs/" + id)
-        .once("value", snapshot => {
-          let job = snapshot.val()
-          job.key = snapshot.key
-          observer.next(snapshot.val())
-        })
+      // firebase.database().ref("/jobs/" + id)
+      //   .once("value", snapshot => {
+      //     let job = snapshot.val()
+      //     job.key = snapshot.key
+      //     observer.next(snapshot.val())
+      //   })
+      observer.next(this.sampleJobs[id])
     })
   }
 
@@ -116,26 +148,35 @@ export class JobsService {
      * 
      * only shows active jobs
      */
-    let promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       let temp_job = []
-      firebase.database().ref("jobs")
-        .orderByKey()
-        .limitToLast(limit)
-        .once("value", snapshot => {
-          snapshot.forEach(job => {
-            let temp = job.val()
-            temp.key = job.key
-            if (temp.status === 'active') {
-              temp_job.push(temp)
-            }
-          })
-          console.log("jobs loaded")
-          resolve(temp_job)
-        }, (error) => {
-          reject(error)
-        })
+      // firebase.database().ref("jobs")
+      //   .orderByKey()
+      //   .limitToLast(limit)
+      //   .once("value", snapshot => {
+      //     snapshot.forEach(job => {
+      //       let temp = job.val()
+      //       temp.key = job.key
+      //       if (temp.status === 'active') {
+      //         temp_job.push(temp)
+      //       }
+      //     })
+      //     console.log("jobs loaded")
+      //     resolve(temp_job)
+      //   }, (error) => {
+      //     reject(error)
+      //   })
+      for (let i in this.sampleJobs) {
+        let temp = this.sampleJobs[i]
+        console.log(temp)
+        temp.key = i
+        if (temp.status === 'active') {
+          temp_job.push(temp)
+        }
+      }
+      console.log("temp",temp_job)
+      resolve(temp_job)
     })
-    return promise
   }
 
   loadNextJobs(limit: number = 5, lastKey: string) {

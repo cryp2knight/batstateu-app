@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Post a job</ion-title>
+    <ion-button slot="end" fill="clear" (click)="closeModal()">
+      <ion-icon name="close-outline" color="medium"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <div>
+      <ion-label>Position *</ion-label>
+      <ion-input [(ngModel)]="inputPosition" placeholder="Junior Developer"></ion-input>
+    </div>
+  </ion-item>
+  <ion-item>
+    <div>
+      <ion-label>Company *</ion-label>
+      <ion-input [(ngModel)]="inputCompany" placeholder="Microsoft"></ion-input>
+    </div>
+  </ion-item>
+  <ion-item>
+    <div>
+      <ion-label>Description *</ion-label>
+      <ion-textarea [(ngModel)]="inputDescription" placeholder="2 years experience with Python">
+      </ion-textarea>
+    </div>
+  </ion-item>
+  <ion-item>
+    <div>
+      <ion-label>Salary</ion-label>
+      <ion-input [(ngModel)]="inputSalary" placeholder="Php" type="number"></ion-input>
+    </div>
+  </ion-item>
+  <ion-item>
+    <ion-label>Type *</ion-label>
+    <ion-select placeholder="Select Type" [(ngModel)]="inputType">
+      <ion-select-option value="full-time">Full-time</ion-select-option>
+      <ion-select-option value="part-time">Part-time</ion-select-option>
+      <ion-select-option value="internship">Internship</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>
+      * required
+    </ion-label>
+    <ion-button slot="end" (click)="getData()">Post</ion-button>
+  </ion-item>
+
+</ion-content>

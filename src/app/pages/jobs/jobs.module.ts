@@ -8,12 +8,16 @@ import { JobsPageRoutingModule } from './jobs-routing.module';
 
 import { JobsPage } from './jobs.page';
 
+import {TimeAgoModule} from 'src/app/modules/time-ago/time-ago.module'
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    JobsPageRoutingModule
+    JobsPageRoutingModule,
+    TimeAgoModule
   ],
   declarations: [JobsPage]
 })
